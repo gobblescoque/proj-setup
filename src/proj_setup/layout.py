@@ -17,6 +17,7 @@ def srclayout(
 
 	folders = ['docs', 'src', 'tests']
 	main_file = 'sample.py'
+	main_file_name = main_file.replace(".py", "")
 
 	# Sets up the basic folder structure
 	for folder in folders:
@@ -39,7 +40,7 @@ def srclayout(
 					'    print(to_print)']
 
 	file = open(f"./src/{proj_name}/{main_file}", "r+")
-	
+
 	for line in mod_contents:
 		file.write(line)
 
@@ -49,9 +50,14 @@ def srclayout(
 	if cli:
 		subprocess.run(["touch", "cli.py"], cwd=f'./src/{proj_name}/')
 
+		main_contents = ['if __name__ == "__main__":\n',
+		                 f'    from {proj_name}.cli import app\n'
+		                 '    app()'
+						]
+
 		cli_contents = ['import typer\n',
 						'\n',
-						f'from .{main_file} import hello\n',
+						f'from .{main_file_name} import hello\n',
 						'\n',
 						'app = typer.Typer()\n',
 						'app.command()(hello)\n',
@@ -65,6 +71,14 @@ def srclayout(
 		for line in cli_contents:
 			file.write(line)
 		file.close()
+
+		file = open(f"./src/{proj_name}/__main__.py", "r+")
+
+		for line in main_contents:
+			file.write(line)
+		file.close()
+
+
 
 	# Creates the pyproject.toml
 	os.system(f'touch $PWD/pyproject.toml')
