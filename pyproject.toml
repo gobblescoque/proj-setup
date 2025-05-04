@@ -1,0 +1,14 @@
+[project]
+name = "proj_setup"
+version = "2025.0.0"
+dependencies = ["typer >= 0.15.3"]
+
+[project.scripts]
+layout = "proj_setup.cli:app"
+
+[project.entry-points."pipx.run"]
+proj_setup = "proj_setup.cli:app"
+
+[build-system]
+requires = ["hatchling >= 1.27"]
+build-backend = "hatchling.build"
