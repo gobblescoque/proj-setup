@@ -12,7 +12,6 @@ def srclayout(
 	"""
 	Create a basic file structure for a basic Python project using the src
 	layout. Creates a 'hello world' template.
-	TODO: Refactor code to use
 	"""
 
 	folders = ['docs', 'src', 'tests']
@@ -83,24 +82,31 @@ def srclayout(
 	# Creates the pyproject.toml
 	os.system(f'touch $PWD/pyproject.toml')
 
-	contents = ['[project]\n',
-				'name = "hello"\n',
-				'version = "0.0"\n',
-				'dependencies = []\n',
-				'\n',
-				'[project.scripts]\n',
-				'hello = "hello.cli:app"\n',
-				'\n',
-				'[project.entry-points."pipx.run"]\n',
-				'hello = "hello.cli:app\n',
-				'[build-system]\n',
-				'\n',
-				'requires = ["hatchling >= 1.27"]\n',
-				'build-backend = "hatchling.build"\n'
-	]
+	if cli:
+		project_contents = ['[project]\n',
+							'name = "hello"\n',
+							'version = "0.0"\n',
+							'dependencies = [typer >= 0.15.3]\n',
+							'\n',
+							'[project.scripts]\n',
+							'hello = "hello.cli:app"\n',
+							'\n',
+							'[project.entry-points."pipx.run"]\n',
+							'hello = "hello.cli:app\n',
+							'[build-system]\n',
+							'\n',
+							'requires = ["hatchling >= 1.27"]\n',
+							'build-backend = "hatchling.build"\n'
+	                        ]
+	else:
+		project_contents = ['[project]\n',
+							'name = "hello"\n',
+							'version = "0.0"\n',
+							'dependencies = []\n',
+		                   ]
 
 	file = open(f"pyproject.toml", "r+")
-	for line in contents:
+	for line in project_contents:
 		file.write(line)
 	file.close()
 
